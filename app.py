@@ -20,7 +20,7 @@ application = Dash("Hot Sun", use_pages=True,
                    suppress_callback_exceptions=True, background_callback_manager=background_callback_manager,
                    )
 
-application._favicon = "/assets/logo.ico"
+application._favicon = "logo.ico"
 
 navbar = dbc.NavbarSimple(
     children=[
@@ -33,8 +33,8 @@ navbar = dbc.NavbarSimple(
     color="transparent",
     dark=True,
     style={"height": "80px",
-           "background-image": "linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0))",
-           "-webkit-filter": "drop-shadow(5px 5px 5px #333333)",
+           "backgroundImage": "linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0))",
+           "WebkitFilter": "drop-shadow(5px 5px 5px #333333)",
            "filter": "drop-shadow(5px 5px 5px #333333)"}
 )
 
@@ -49,7 +49,7 @@ application.layout = html.Div([dbc.Carousel(
     interval=3000,
     ride="carousel",
     className="carousel-fade",
-    style={"z-index": "-1", "overflow": "hidden", "position": "absolute", "margin": "auto", "padding": "auto", "height": "100vh", "width": "100vw"}
+    style={"zIndex": "-1", "overflow": "hidden", "position": "absolute", "margin": "auto", "padding": "auto", "height": "100vh", "width": "100vw"}
 ),
     navbar,
     dash.page_container,
@@ -57,12 +57,12 @@ application.layout = html.Div([dbc.Carousel(
                         dbc.Progress(id="progress_bar",
                                      style={'width': '300px', 'height': '20px'})],
                        style={"position": "absolute", "left": "50%", "top": "50%",
-                              "margin-top": "-50px",
-                              "margin-left": "-150px"})],
+                              "marginTop": "-50px",
+                              "marginLeft": "-150px"})],
              id="loading", style={"display": "none"}, className="text-center"),
     dcc.Store(id="config", storage_type="session", data=json.load(open("config.json"))),
     html.Div(style={"overflow": "hidden", "height": "100vh",
-                    "background-image": "linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.1))",
+                    "backgroundImage": "linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0.1))",
                     })
 ], style={"overflow": "hidden", "height": "100vh"})
 ConfigGetter.load_data()
@@ -81,8 +81,8 @@ ConfigGetter.load_data()
         (Output("cancel", "disabled"), False, True),
         (Output("loading", "style"), {"display": 'block', 'position': 'absolute',
                                       'top': '8%', 'left': '25%',
-                                      'text-align': "center", 'width': "75%", "height": "92%",
-                                      "background": "rgba(255,255,255,0)", "background-size": "cover"}
+                                      'textAlign': "center", 'width': "75%", "height": "92%",
+                                      "background": "rgba(255,255,255,0)", "backgroundSize": "cover"}
          , {"display": "none"})
     ],
     cancel=[Input("cancel", "n_clicks"), Input("location", "href")],
@@ -109,14 +109,13 @@ def main(set_progress, n, config):
                                                           config['solar']['loss'])
     else:
         solar_rad_hourly = SolarRadiationHourlyMonthData()
-
+    print("setting progress")
     set_progress(("1", "1", "Gathering Data...", "100%"))
 
     manager = Manager(demand_hourly, [],
                       solar_rad_hourly,
                       hourly_strategy.GreedyDailyStrategy(), config)
     output_energy = manager.run_simulator(set_progress)
-
     post_processor = PostProcessor(output_energy, config)
     output_post_processor = post_processor.run_post_processor(set_progress)
 

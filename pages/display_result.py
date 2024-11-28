@@ -15,17 +15,17 @@ sidebar = html.Div([html.H4("Control Panel", className="text-center my-2"),
                     dcc.Store(id="df_energy"), dcc.Store(id="df_finance"),
                     dcc.Location(id="location")],
                    style={"height": "90vh", "width": "100%",
-                          "overflow-y": "auto", "overflow-x": "hidden",
+                          "overflowY": "auto", "overflowX": "hidden",
                           "background": "rgba(255, 255, 255, 0.3)",
-                          "backdrop-filter": "blur(8px)",
-                          "border-radius": "10px"}, id="sidebar", className="mx-3")
+                          "backdropFilter": "blur(8px)",
+                          "borderRadius": "10px"}, id="sidebar", className="mx-3")
 
 layout = html.Div(dbc.Row([dbc.Col(sidebar, width=3),
                            dbc.Col(
                                html.Div(style={"overflow": "auto", "height": "90vh",
                                                "background": "rgba(255, 255, 255, 0.3)",
-                                               "backdrop-filter": "blur(8px)",
-                                               "border-radius": "10px"}), id="display",
+                                               "backdropFilter": "blur(8px)",
+                                               "borderRadius": "10px"}), id="display",
                                width=9)]))
 
 

@@ -7,13 +7,13 @@ import numpy as np
 
 roundbutton = {
     "border": "2px solid grey",
-    "border-radius": "50%",
+    "borderRadius": "50%",
     "padding": 0,
-    "background-color": "transparent",
+    "backgroundColor": "transparent",
     "color": "black",
-    "text-align": "center",
+    "textAlign": "center",
     "display": "inline-block",
-    "font-size": 16,
+    "fontSize": 16,
     "height": 25,
     "width": 25,
     "margin": 0,
@@ -148,7 +148,7 @@ def dict_to_dataframe(df):
     df = pd.DataFrame(df)
     if df.empty:
         return df
-    df['Date'] = pd.to_datetime(df['Date'], dayfirst=True)
+    df['Date'] = pd.to_datetime(df['Date'], dayfirst=False)
     df = df.set_index('Date')
     for coloumn in df.columns:
         if coloumn in energy_columns:
@@ -242,9 +242,9 @@ def get_score_display(score, label):
             "displayModeBar": False,
             "showTips": False
         },
-        style={"height": "200px", "width": "100%", "align-items": "center"}
+        style={"height": "200px", "width": "100%", "alignItems": "center"}
         , className="d-flex flex-wrap justify-content-center"
-    )), html.H4(label)], style={"text-align": "center"})
+    )), html.H4(label)], style={"textAlign": "center"})
 
 
 def get_card_display(value, unit, title, explanation, icon, color="black"):
@@ -261,12 +261,12 @@ def get_card_display(value, unit, title, explanation, icon, color="black"):
     return dbc.Card([
         dbc.CardBody([
             html.H4(html.I(className=icon), className="card-title",
-                    style={"text-align": "center", "font-size": 108, "color": color}),
-            html.Div(DashIconify(icon=icon, color=color, width=108, height=108,
-                                 style={"display": "flex", "justify-content": "center"}, className="card-title"),
-                     className="d-flex align-items-center justify-content-center"),
-            html.H1(f"{'{:,}'.format(value)} {unit}", className="card-title", style={"text-align": "center", "font-size": 48}),
-            html.H4(title, className="card-title", style={"text-align": "center"}),
+                    style={"textAlign": "center", "fontSize": 108, "color": color}),
+            # html.Div(DashIconify(icon=icon, color=color, width=108, height=108,
+            #                      style={"display": "flex", "justifyContent": "center"}, className="card-title"),
+            #          className="d-flex align-items-center justify-content-center"),
+            html.H1(f"{'{:,}'.format(value)} {unit}", className="card-title", style={"textAlign": "center", "fontSize": 48}),
+            html.H4(title, className="card-title", style={"textAlign": "center"}),
             html.P(explanation, className="card-text")
         ])], style={"width": "20rem"}, className="mx-2 my-2")
 
@@ -277,16 +277,16 @@ def get_display(config, df_energy, df_finance):
     :param config: the config file
     :param df_energy: the energy data frame
     :param df_finance: the finance data frame
-    :return: the display of the dashboard by summery section, energy section, finance section and pollution section
+    :return: the display of the dashboard by summary section, energy section, finance section and pollution section
     """
     results = calculate_interesting_numbers(config, df_energy, df_finance)
     grades = grade(results, df_energy, df_finance)
     df_energy = dict_to_dataframe(df_energy)
     df_finance = pd.DataFrame(df_finance)
-    display_summery = html.Div([
+    display_summary = html.Div([
         dbc.Row([dbc.Col(get_score_display(score, label), width=12 // len(grades), align="center") for score, label in
                  zip(grades, ['Environmental Score', 'Overall Score', 'Financial Score'])],
-                className="d-flex flex-wrap justify-content-center", style={"margin-bottom": "20px"}),
+                className="d-flex flex-wrap justify-content-center", style={"marginBottom": "20px"}),
 
         html.Div([get_card_display(*params) for params in results.values()
                   ], className="d-flex flex-wrap justify-content-center"),
@@ -355,7 +355,7 @@ def get_display(config, df_energy, df_finance):
                                           config={"displayModeBar": False})
                                 ])
 
-    display_pollution = html.Div([dcc.Graph(id='yearlyPollutionGraph',
+    display_pollution = html.Div([dcc.Graph(id='yearlyPollutionGraph1',
                                             figure=get_figure(
                                                 [go.Bar(x=df_finance.index, y=df_finance[col], name=col.replace('_', " ").title(),
                                                         marker={'color': colors[col], 'line.width': 0})
@@ -366,7 +366,7 @@ def get_display(config, df_energy, df_finance):
                                                 bar_mode="group"
                                             ),
                                             config={"displayModeBar": False}),
-                                  dcc.Graph(id='yearlyPollutionGraph',
+                                  dcc.Graph(id='yearlyPollutionGraph2',
                                             figure=get_figure(
                                                 [go.Bar(x=df_finance.index, y=df_finance[col], name=col.replace('_', " ").title(),
                                                         marker={'color': colors[col], 'line.width': 0})
@@ -379,15 +379,15 @@ def get_display(config, df_energy, df_finance):
                                             config={"displayModeBar": False})
                                   ])
 
-    display = html.Div([dbc.Accordion([dbc.AccordionItem(display_summery, title='Summery'),
+    display = html.Div([dbc.Accordion([dbc.AccordionItem(display_summary, title='Summary'),
                                        dbc.AccordionItem(display_energy, title='Energy'),
                                        dbc.AccordionItem(display_finance, title='Finance'),
                                        dbc.AccordionItem(display_pollution, title='Pollution')],
                                       always_open=True),
 
                         ], style={"overflow": "auto", "height": "90vh", "background": "rgba(255, 255, 255, 0.3)",
-                                  "backdrop-filter": "blur(8px)",
-                                  "border-radius": "10px"})
+                                  "backdropFilter": "blur(8px)",
+                                  "borderRadius": "10px"})
     return display
 
 

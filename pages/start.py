@@ -181,8 +181,8 @@ def get_screen(i, period, start, end, location, strategy):
                         style={"padding": "20px"})
 
 
-center = {"position": "absolute", "top": "50%", "-ms-transform": "translateY(-50%)", "transform": "translateY(-50%)"}
-bottom = {"position": "absolute", "top": "95%", "-ms-transform": "translateY(-50%)", "transform": "translateY(-50%)"}
+center = {"position": "absolute", "top": "50%", "msTransform": "translateY(-50%)", "transform": "translateY(-50%)"}
+bottom = {"position": "absolute", "top": "95%", "msTransform": "translateY(-50%)", "transform": "translateY(-50%)"}
 
 layout = html.Div([dbc.Card(
     [dbc.CardBody([html.Div([dbc.Row([
@@ -205,7 +205,7 @@ layout = html.Div([dbc.Card(
              "width": "70%",
              "padding": "10px",
              "margin": "5% 10% 15% 15%",
-             "backdrop-filter": "blur(8px)"
+             "backdropFilter": "blur(8px)"
              }, color="rgba(255, 255, 255, 0.3")
     , dcc.Store(id="city-lon-lat", storage_type='local', data=ConfigGetter['LOCATION'])
     , dcc.Store(id="date-start", storage_type='local',

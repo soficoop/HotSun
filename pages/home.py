@@ -9,6 +9,6 @@ layout = html.Div([html.Img(src="assets/logo_no_bg_white.png", className="align-
                                   "left": "50%",
                                   "top": "50%",
                                   "transform": "translate(-50%, -50%)",
-                                  "-webkit-filter": "drop-shadow(5px 5px 5px #333333)",
-                         "text-align": "center",
+                                  "WebkitFilter": "drop-shadow(5px 5px 5px #333333)",
+                         "textAlign": "center",
                                   "filter": "drop-shadow(5px 5px 5px #333333)"}, className="align-center")

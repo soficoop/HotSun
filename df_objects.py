@@ -208,21 +208,28 @@ class SolarProductionHourlyDataPVGIS(SolarRadiationHourly):
             api_url = f"https://re.jrc.ec.europa.eu/api/seriescalc?lat={self.latitude}&lon={longitude}&" \
                       f"startyear={2016}&endyear={2016}&pvcalculation={1}&peakpower={self.peakpower}&" \
                       f"loss={self.loss}&optimalinclination={1}&optimalangles={1}&outputformat=csv"
+            print("downloading solar radiation data")
             response = requests.get(api_url)
-
+            print("creating csv file")
             with open(file_path, 'w+', newline='') as file_data:
                 writer = csv.writer(file_data, delimiter=',')
                 for line in str(response.content).split(r"\r\n")[10:-10]:
                     writer.writerow(line.split(','))
+            print("done")
 
         titles = ['time', 'P', 'G(i)', 'H_sun', 'T2m', 'WS10m', 'Int']
-
+        print("reading csv file")
         self.df = pd.read_csv(file_path, header=[0])[['time', 'P']]
+        print("converting time")
         self.df['time'] = pd.to_datetime(self.df['time'], format="%Y%m%d:%H%M")
         # israel is at (GMT+3)
+        print("adding 3 hours")
         self.df['time'] = self.df['time'] + pd.DateOffset(hours=3)
+        print("filling missing hours")
         missing_hours = pd.DataFrame({'time': pd.date_range('2016-01-01', periods=3, freq='H'), 'P': [0, 0, 0]})
-        self.df = missing_hours.append(self.df)
+        print("appending")
+        self.df = pd.concat([missing_hours, self.df])
+        print("done")
 
     def get_solar_rad_daily_by_range_of_date(self, start_date: datetime.datetime, end_date: datetime.datetime):
         """

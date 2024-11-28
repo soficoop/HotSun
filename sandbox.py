@@ -31,7 +31,7 @@ app.layout = html.Div(
                 "displayModeBar": False,
                 "showTips": False
             },
-            style={"height": "350px", "width": "350px", "align-text": "center", "margin-top": "-100px", "z-index": -1}
+            style={"height": "350px", "width": "350px", "align-text": "center", "marginTop": "-100px", "z-index": -1}
 
         )
     ]
